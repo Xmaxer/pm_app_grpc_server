@@ -24,6 +24,11 @@ class PMAppStub(object):
         request_serializer=pm__app__pb2.DataPoint.SerializeToString,
         response_deserializer=pm__app__pb2.Empty.FromString,
         )
+    self.SaveData = channel.unary_unary(
+        '/pm_app.PMApp/SaveData',
+        request_serializer=pm__app__pb2.ResultDataPoint.SerializeToString,
+        response_deserializer=pm__app__pb2.Empty.FromString,
+        )
 
 
 class PMAppServicer(object):
@@ -44,6 +49,13 @@ class PMAppServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def SaveData(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_PMAppServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -55,6 +67,11 @@ def add_PMAppServicer_to_server(servicer, server):
       'SendData': grpc.unary_unary_rpc_method_handler(
           servicer.SendData,
           request_deserializer=pm__app__pb2.DataPoint.FromString,
+          response_serializer=pm__app__pb2.Empty.SerializeToString,
+      ),
+      'SaveData': grpc.unary_unary_rpc_method_handler(
+          servicer.SaveData,
+          request_deserializer=pm__app__pb2.ResultDataPoint.FromString,
           response_serializer=pm__app__pb2.Empty.SerializeToString,
       ),
   }

@@ -17,14 +17,14 @@ class PmAppServicer(pm_app_pb2_grpc.PMAppServicer):
                 print("Popping: ")
                 print(res)
                 print("Remaining: " + str(len(self.data[request.id])))
-                yield pm_app_pb2.DataPoint(id=request.id, data=res)
+                yield pm_app_pb2.DataPoint(id=request.id, data=res["data"], settings=res["settings"])
 
     def SendData(self, request, context):
         # influx = InfluxDBClient('localhost', 8086, 'kevin', 'root', 'data')
         # data = json.loads(request.data)
         # field_values = {k: v for k, v in enumerate(data)}
-        # tags = {"asset_id": request.asset_id}
-        # measurement = "asset_" + str(request.asset_id)
+        # tags = {"asset_id": request.id}
+        # measurement = "asset_" + str(request.id)
         # body = [
         #     {
         #         "measurement": measurement,
@@ -36,5 +36,20 @@ class PmAppServicer(pm_app_pb2_grpc.PMAppServicer):
         print("Request: ")
         print(request)
         self.data.setdefault(request.id, [])
-        self.data[request.id].append(request.data)
+        self.data[request.id].append({"data": request.data, "settings": request.settings})
         return pm_app_pb2.Empty()
+
+    def SaveData(self, request, context):
+        influx = InfluxDBClient('localhost', 8086, 'kevin', 'root', 'results')
+        data = json.loads(request.data)
+        field_values = {k: v for k, v in enumerate(data)}
+        tags = {"asset_id": request.id}
+        measurement = "asset_" + str(request.id)
+        body = [
+            {
+                "measurement": measurement,
+                "tags": tags,
+                "fields": field_values
+            }
+        ]
+        influx.write_points(body)

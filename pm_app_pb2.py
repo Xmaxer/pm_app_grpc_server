@@ -18,7 +18,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='pm_app',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x0cpm_app.proto\x12\x06pm_app\"\x1a\n\x0c\x41ssetDetails\x12\n\n\x02id\x18\x01 \x01(\x05\"%\n\tDataPoint\x12\x0c\n\x04\x64\x61ta\x18\x01 \x03(\t\x12\n\n\x02id\x18\x02 \x01(\x05\"\x11\n\x0fResultDataPoint\"\x1a\n\x07Success\x12\x0f\n\x07success\x18\x01 \x01(\x08\"\x07\n\x05\x45mpty2o\n\x05PMApp\x12\x36\n\x07GetData\x12\x14.pm_app.AssetDetails\x1a\x11.pm_app.DataPoint\"\x00\x30\x01\x12.\n\x08SendData\x12\x11.pm_app.DataPoint\x1a\r.pm_app.Empty\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0cpm_app.proto\x12\x06pm_app\"\x1a\n\x0c\x41ssetDetails\x12\n\n\x02id\x18\x01 \x01(\x05\"7\n\tDataPoint\x12\x0c\n\x04\x64\x61ta\x18\x01 \x03(\t\x12\n\n\x02id\x18\x02 \x01(\x05\x12\x10\n\x08settings\x18\x03 \x01(\t\"+\n\x0fResultDataPoint\x12\x0c\n\x04\x64\x61ta\x18\x01 \x03(\t\x12\n\n\x02id\x18\x02 \x01(\x05\"\x1a\n\x07Success\x12\x0f\n\x07success\x18\x01 \x01(\x08\"\x07\n\x05\x45mpty2\xa5\x01\n\x05PMApp\x12\x36\n\x07GetData\x12\x14.pm_app.AssetDetails\x1a\x11.pm_app.DataPoint\"\x00\x30\x01\x12.\n\x08SendData\x12\x11.pm_app.DataPoint\x1a\r.pm_app.Empty\"\x00\x12\x34\n\x08SaveData\x12\x17.pm_app.ResultDataPoint\x1a\r.pm_app.Empty\"\x00\x62\x06proto3'
 )
 
 
@@ -76,6 +76,13 @@ _DATAPOINT = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='settings', full_name='pm_app.DataPoint.settings', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -89,7 +96,7 @@ _DATAPOINT = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=52,
-  serialized_end=89,
+  serialized_end=107,
 )
 
 
@@ -100,6 +107,20 @@ _RESULTDATAPOINT = _descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    _descriptor.FieldDescriptor(
+      name='data', full_name='pm_app.ResultDataPoint.data', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='id', full_name='pm_app.ResultDataPoint.id', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -112,8 +133,8 @@ _RESULTDATAPOINT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=91,
-  serialized_end=108,
+  serialized_start=109,
+  serialized_end=152,
 )
 
 
@@ -143,8 +164,8 @@ _SUCCESS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=110,
-  serialized_end=136,
+  serialized_start=154,
+  serialized_end=180,
 )
 
 
@@ -167,8 +188,8 @@ _EMPTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=138,
-  serialized_end=145,
+  serialized_start=182,
+  serialized_end=189,
 )
 
 DESCRIPTOR.message_types_by_name['AssetDetails'] = _ASSETDETAILS
@@ -221,8 +242,8 @@ _PMAPP = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=147,
-  serialized_end=258,
+  serialized_start=192,
+  serialized_end=357,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetData',
@@ -239,6 +260,15 @@ _PMAPP = _descriptor.ServiceDescriptor(
     index=1,
     containing_service=None,
     input_type=_DATAPOINT,
+    output_type=_EMPTY,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='SaveData',
+    full_name='pm_app.PMApp.SaveData',
+    index=2,
+    containing_service=None,
+    input_type=_RESULTDATAPOINT,
     output_type=_EMPTY,
     serialized_options=None,
   ),
