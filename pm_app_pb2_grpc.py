@@ -19,7 +19,7 @@ class PMAppStub(object):
         request_serializer=pm__app__pb2.AssetDetails.SerializeToString,
         response_deserializer=pm__app__pb2.DataPoint.FromString,
         )
-    self.SendData = channel.unary_unary(
+    self.SendData = channel.stream_unary(
         '/pm_app.PMApp/SendData',
         request_serializer=pm__app__pb2.DataPoint.SerializeToString,
         response_deserializer=pm__app__pb2.Empty.FromString,
@@ -42,7 +42,7 @@ class PMAppServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def SendData(self, request, context):
+  def SendData(self, request_iterator, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -64,7 +64,7 @@ def add_PMAppServicer_to_server(servicer, server):
           request_deserializer=pm__app__pb2.AssetDetails.FromString,
           response_serializer=pm__app__pb2.DataPoint.SerializeToString,
       ),
-      'SendData': grpc.unary_unary_rpc_method_handler(
+      'SendData': grpc.stream_unary_rpc_method_handler(
           servicer.SendData,
           request_deserializer=pm__app__pb2.DataPoint.FromString,
           response_serializer=pm__app__pb2.Empty.SerializeToString,
