@@ -1,6 +1,7 @@
 import pm_app_pb2
 import pm_app_pb2_grpc
 from influxdb import InfluxDBClient
+import os
 import json
 
 
@@ -38,7 +39,7 @@ class PmAppServicer(pm_app_pb2_grpc.PMAppServicer):
         return pm_app_pb2.Empty()
 
     def SaveData(self, request, context):
-        influx = InfluxDBClient('localhost', 8086, 'kevin', 'root', 'results')
+        influx = InfluxDBClient(os.getenv("INFLUX_DATABASE_HOST"), os.getenv("INFLUX_DATABASE_PORT"), os.getenv("INFLUX_DATABASE_USERNAME"), os.getenv("INFLUX_DATABASE_PASSWORD"), 'results')
         data = list(request.data)
         field_values = {k: v for k, v in enumerate(data)}
         tags = {"asset_id": request.id}
