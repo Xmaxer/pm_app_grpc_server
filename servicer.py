@@ -19,7 +19,7 @@ class PmAppServicer(pm_app_pb2_grpc.PMAppServicer):
                 yield pm_app_pb2.DataPoint(id=request.id, data=res["data"], settings=res["settings"])
 
     def SendData(self, request_iterator, context):
-        influx = InfluxDBClient('localhost', 8086, 'kevin', 'root', 'data')
+        influx = InfluxDBClient(os.getenv("INFLUX_DATABASE_HOST"), os.getenv("INFLUX_DATABASE_PORT"), os.getenv("INFLUX_DATABASE_USERNAME"), os.getenv("INFLUX_DATABASE_PASSWORD"), 'data')
         for request in request_iterator:
             print(request)
             data = list(request.data)
@@ -41,7 +41,7 @@ class PmAppServicer(pm_app_pb2_grpc.PMAppServicer):
     def SaveData(self, request, context):
         influx = InfluxDBClient(os.getenv("INFLUX_DATABASE_HOST"), os.getenv("INFLUX_DATABASE_PORT"), os.getenv("INFLUX_DATABASE_USERNAME"), os.getenv("INFLUX_DATABASE_PASSWORD"), 'results')
         data = list(request.data)
-        field_values = {k: v for k, v in enumerate(data)}
+        field_values = {"col_" + str(k): v for k, v in enumerate(data)}
         tags = {"asset_id": request.id}
         measurement = "asset_" + str(request.id)
         body = [
